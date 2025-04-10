@@ -10,10 +10,10 @@ import matplotlib.pyplot as plt
 import warnings
 warnings.filterwarnings('ignore')
 
-# 1) Load CSV
+# Load data
 df = pd.read_csv(r"C:\Users\Indransh\OneDrive\Desktop\MACHINE LEARNING\DATA\SKIN_CANCER DATASET.csv")
 
-# 2) Select columns
+# Select relevant columns
 cols = [
     'smoke','drink','age','gender','skin_cancer_history','cancer_history',
     'has_piped_water','has_sewage_system','fitspatrick','region',
@@ -23,7 +23,6 @@ cols = [
 df = df[cols]
 df['biopsed'] = df['biopsed'].astype(int)
 
-# 3) Boolean‑like → 0/1
 bool_cols = [
     'smoke','drink','skin_cancer_history','cancer_history',
     'has_piped_water','has_sewage_system',
@@ -43,12 +42,7 @@ df = pd.get_dummies(
 )
 
 # 6) Handle remaining missing values
-# Option A: Drop any rows with NaN
 df = df.dropna()
-
-# Option B: Impute with column mean instead of dropping
-# imputer = SimpleImputer(strategy='mean')
-# df[df.columns] = imputer.fit_transform(df)
 
 # 7) Verify no NaNs remain
 print("Any NaNs left? ", df.isna().any().any())
@@ -60,12 +54,12 @@ y = df['biopsed'].values
 # 9) Scale features
 X_norm = StandardScaler().fit_transform(X)
 
-# 10) Split into train/test
+# 10) Split into train and test
 X_train, X_test, y_train, y_test = train_test_split(
     X_norm, y, test_size=0.2, random_state=4
 )
 
-# 11) Train logistic regression
+# 11) Train logistic regression model
 LR = LogisticRegression().fit(X_train, y_train)
 
 # 12) Predict & get probabilities
@@ -90,7 +84,6 @@ X_scaled = scaler.fit_transform(X)
 X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2)
 model = LogisticRegression().fit(X_train, y_train)
 
-# --- Prediction Input ---
 # Binary and numerical inputs
 sample_dict = {
     'smoke': int(input("Do you smoke? (0/1): ")),
